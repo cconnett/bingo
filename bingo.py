@@ -10,7 +10,7 @@ import requests
 inq = PriorityQueue()
 outq = PriorityQueue()
 
-# lock = threading.RLock()
+lock = threading.RLock()
 hi_seed = 1000001
 
 FULL_ITEM_LIST = [
@@ -93,6 +93,7 @@ def mixkey(seed):
 
 
 class Worker(threading.Thread):
+
   def run(self):
     while True:
       global hi_score, inq, outq
@@ -111,9 +112,11 @@ class Worker(threading.Thread):
           all(board[i] in itemList for i in bingo) for bingo in bingos)
       score = (num_bingos, hits)
       if score > hi_score:
-        hi_score = score
-        print('New high score: {1} items forming {0} bingos'.format(*hi_score))
-        print('Seed:', seed)
+        with lock:
+          hi_score = score
+          print('New high score: {1} items forming {0} bingos'.format(
+              *hi_score))
+          print('Seed:', seed)
       outq.put((len(itemList), -num_bingos, -hits, seed, board))
 
   def NewCard(self):
@@ -163,6 +166,7 @@ class ARC4(object):
 
 
 class PRNG(object):
+
   def __init__(self, key):
     self.arc4 = ARC4(key)
 
