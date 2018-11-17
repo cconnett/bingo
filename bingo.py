@@ -31,6 +31,9 @@ FULL_ITEM_LIST = [
     "Zora Mask"
 ]
 
+ids = itertools.count()
+ITEM_IDS = {key: next(ids) for key in FULL_ITEM_LIST}
+
 horizontal_bingos = [
     [0, 1, 2, 3, 4],
     [5, 6, 7, 8, 9],
@@ -80,7 +83,10 @@ def genCardArray(key):
     source[index:index + 1] = []
     if item == "Transformation Mask":
       item = ["Deku Mask", "Goron Mask", "Zora Mask"][int(rng.double() * 3)]
-    yield item
+    yield ITEM_IDS[item]
+
+
+WIDTH = 256
 
 
 def mixkey(seed):
@@ -128,10 +134,8 @@ class Worker(threading.Thread):
     return (0, 0, 0, myseed, board)
 
 
-WIDTH = 256
-
-
 class ARC4(object):
+
   def __init__(self, key):
     if not key:
       key = [0]
@@ -197,7 +201,7 @@ def refresh():
   items = json.loads(
       requests.get('http://kinda.sexy/trev/bingo/items.json').text)
   for item in items:
-    add(item)
+    add(ITEM_IDS[item])
 
 
 if __name__ == '__main__':
