@@ -32,7 +32,8 @@ FULL_ITEM_LIST = [
 ]
 
 ids = itertools.count()
-ITEM_IDS = {key: next(ids) for key in FULL_ITEM_LIST}
+ITEM_IDS = {item_name: next(ids) for item_name in FULL_ITEM_LIST}
+ITEM_NAMES = {v:k for k,v in ITEM_IDS.items()}
 
 horizontal_bingos = [
     [0, 1, 2, 3, 4],
@@ -114,7 +115,7 @@ class Worker(threading.Thread):
 
       # Check seed
       hits = len(itemList & set(board))
-      if hits == 24: print(set(board) - itemList)
+      if hits == 24: print(list(ITEM_NAMES[x] for x in set(board) - itemList))
       num_bingos = sum(
           all(board[i] in itemList for i in bingo) for bingo in bingos)
       score = (num_bingos, hits)
