@@ -27,7 +27,8 @@ FULL_ITEM_LIST = [
     "Bunny Hood", "Don Gero's Mask", "Mask of Scents", "Romani's Mask",
     "Circus Leader's Mask", "Kafei's Mask", "Couple's Mask", "Mask of Truth",
     "Kamaro's Mask", "Gibdo Mask", "Garo's Mask", "Captain's Hat",
-    "Giant's Mask", "Fierce Deity's Mask", "Transformation Mask"
+    "Giant's Mask", "Fierce Deity's Mask", "Deku Mask", "Goron Mask",
+    "Zora Mask"
 ]
 
 horizontal_bingos = [
@@ -72,7 +73,7 @@ def add(item):
 
 def genCardArray(key):
   rng = PRNG(mixkey(key))
-  source = FULL_ITEM_LIST[:]
+  source = FULL_ITEM_LIST[:-3] + ["Transformation Mask"]
   for i in range(25):
     index = int(rng.double() * len(source))
     item = source[index]
